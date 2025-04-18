@@ -1,6 +1,7 @@
 ﻿using MobileProviderAPI.Data.Db;
 using MobileProviderAPI.Model.Dto;
 using MobileProviderAPI.Model;
+using System.Collections.Generic;
 
 namespace MobileProviderAPI.Data.Svc
 {
@@ -37,17 +38,31 @@ namespace MobileProviderAPI.Data.Svc
 
             var total = CalculateTotal(usages);
 
-            var bill = new Bill
+            var existingBill = _access.GetBill(subscriberNo, month, year);
+            // if no bill exists creates a new one
+            if (existingBill == null)
             {
-                SubscriberNo = subscriberNo,
-                Month = month,
-                Year = year,
-                // No payment yet, if there is no existing bill will be checked in AddOrUpdateBill
-                TotalPaid = 0, 
-                RemainingPayment = total
-            };
+                var newBill = new Bill
+                {
+                    SubscriberNo = subscriberNo,
+                    Month = month,
+                    Year = year,
+                    TotalPaid = 0,
+                    RemainingPayment = total
+                };
+                _access.AddOrUpdateBill(newBill);
+            }
+            else
+            {
+                //                  Usage	Total Paid  Remaining
+                //First Calculation   0MB   $50   $0    $50
+                //Payment Made		        $50   $50   $0
+                //Add 10GB more   10240MB   $60   $50   $10
+                //Issue encountered
+                existingBill.RemainingPayment = Math.Max(0, total - existingBill.TotalPaid);
+                _access.AddOrUpdateBill(existingBill);
+            }
 
-            _access.AddOrUpdateBill(bill);
             return "Bill Calculated";
         }
 
