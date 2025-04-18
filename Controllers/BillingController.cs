@@ -28,6 +28,9 @@ namespace MobileProviderAPI.Controllers
         [HttpGet("CalculateBill")]
         public IActionResult CalculateBill(string subscriberNo, int month, int year)
         {
+            var result = _billingService.CalculateBill(subscriberNo, month, year);
+            if (result == null)
+                return NotFound(new { message = "Usages not found for the given subscriber and date." });
             return Ok(_billingService.CalculateBill(subscriberNo, month, year));
         }
 
@@ -35,13 +38,19 @@ namespace MobileProviderAPI.Controllers
         [HttpGet("QueryBillDetailed")]
         public IActionResult QueryBillDetailed(string subscriberNo, int month, int year, int page = 1, int pageSize = 10)
         {
-            return Ok(_billingService.QueryBillDetailed(subscriberNo, month, year, page, pageSize));
+            var result = _billingService.QueryBillDetailed(subscriberNo, month, year, page,pageSize);
+            if (result == null)
+                return NotFound(new { message = "Bill not found for the given subscriber and date." });
+            return Ok(result);
         }
 
         [HttpGet("QueryBill")]
         public IActionResult QueryBill(string subscriberNo, int month, int year)
         {
-            return Ok(_billingService.QueryBill(subscriberNo, month, year));
+            var result = _billingService.QueryBill(subscriberNo,month, year);
+            if (result == null)
+                return NotFound(new { message = "Bill not found for the given subscriber and date." });
+            return Ok(result);
         }
 
         [HttpPost("PayBill")]

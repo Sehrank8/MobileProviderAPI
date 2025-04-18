@@ -32,6 +32,9 @@ namespace MobileProviderAPI.Data.Svc
         public string CalculateBill(string subscriberNo, int month, int year)
         {
             var usages = _access.GetUsages(subscriberNo, month, year).Where(u => !u.IsPaid);
+            if (usages == null)
+                return null;
+
             var total = CalculateTotal(usages);
 
             var bill = new Bill
@@ -52,6 +55,8 @@ namespace MobileProviderAPI.Data.Svc
         public BillResultDetailedDto QueryBillDetailed(string subscriberNo, int month, int year, int page, int pageSize)
         {
             var bill = _access.GetBill(subscriberNo, month, year);
+            if (bill == null)
+                return null;
             var all = _access.GetUsages(subscriberNo, month, year).ToList();
             var pageItems = all.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
@@ -76,11 +81,13 @@ namespace MobileProviderAPI.Data.Svc
 
         public BillResultDto QueryBill(string subscriberNo, int month, int year)
         {
-            var usages = _access.GetUsages(subscriberNo, month, year);
+            var bill = _access.GetBill(subscriberNo, month, year);
+            if (bill == null)
+                return null;
             return new BillResultDto
             {
-                TotalRemaining = CalculateTotal(usages),
-                IsPaid = usages.All(u => u.IsPaid)
+                TotalRemaining = bill?.RemainingPayment ?? 0,
+                IsPaid = bill?.RemainingPayment == 0,
             };
         }
 
