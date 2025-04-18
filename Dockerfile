@@ -12,7 +12,7 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["MobileProviderAPI/MobileProviderAPI.csproj", "MobileProviderAPI/"]
+COPY ["MobileProviderAPI/MobileProviderAPI.csproj", "."]
 RUN dotnet restore "./MobileProviderAPI/MobileProviderAPI.csproj"
 COPY . .
 WORKDIR "/src/MobileProviderAPI"
