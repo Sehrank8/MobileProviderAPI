@@ -3,7 +3,7 @@
 
 A RESTful Web API built with **ASP.NET Core 8.0**, **PostgreSQL**, and **Entity Framework Core** that simulates a mobile service provider's billing system. It supports adding usage, calculating monthly bills (with business logic for phone and internet charges), querying bills, and making payments. The API also uses **JWT-based authentication** and supports **pagination** in detailed billing queries.
 
- My deployed instance on Render that you can test on [Swagger](https://mobileproviderapi.onrender.com/swagger/index.html)
+ My deployed instance on Render that you can test with [Swagger](https://mobileproviderapi.onrender.com/swagger/index.html)
 
 ---
 ##  Assumptions
