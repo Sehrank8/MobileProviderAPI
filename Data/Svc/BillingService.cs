@@ -68,9 +68,6 @@ namespace MobileProviderAPI.Data.Svc
            return "Bill Calculated";
        }
 
-            return "Bill Calculated";
-        }
-
 
         public BillResultDetailedDto QueryBillDetailed(string subscriberNo, int month, int year, int page, int pageSize)
         {
