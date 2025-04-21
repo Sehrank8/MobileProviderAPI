@@ -30,39 +30,43 @@ namespace MobileProviderAPI.Data.Svc
             return "Usage Added.";
         }
 
-        public string CalculateBill(string subscriberNo, int month, int year)
-        {
-            var usages = _access.GetUsages(subscriberNo, month, year).Where(u => !u.IsPaid);
-            if (usages == null)
-                return null;
+       public string CalculateBill(string subscriberNo, int month, int year)
+       {
+           var usages = _access.GetUsages(subscriberNo, month, year);
+           if (usages == null)
+               return null;
 
-            var total = CalculateTotal(usages);
+           var total = CalculateTotal(usages.Where(u => !u.IsPaid));
 
-            var existingBill = _access.GetBill(subscriberNo, month, year);
-            // if no bill exists creates a new one
-            if (existingBill == null)
-            {
-                var newBill = new Bill
-                {
-                    SubscriberNo = subscriberNo,
-                    Month = month,
-                    Year = year,
-                    TotalPaid = 0,
-                    RemainingPayment = total
-                };
-                _access.AddOrUpdateBill(newBill);
-            }
-            else
-            {
-                //                  Usage	Total Paid  Remaining
-                //First Calculation   0MB   $50   $0    $50
-                //Payment Made		        $50   $50   $0
-                //Add 10GB more   10240MB   $60   $50   $10
-                //Issue encountered
-                existingBill.TotalPaid = CalculateTotal(_access.GetUsages(subscriberNo, month, year).Where(u => u.IsPaid));
-                existingBill.RemainingPayment = total;
-                _access.AddOrUpdateBill(existingBill);
-            }
+           var existingBill = _access.GetBill(subscriberNo, month, year);
+           // if no bill exists creates a new one
+           if (existingBill == null)
+           {
+               var newBill = new Bill
+               {
+                   SubscriberNo = subscriberNo,
+                   Month = month,
+                   Year = year,
+                   TotalPaid = 0,
+                   RemainingPayment = total
+               };
+               _access.AddOrUpdateBill(newBill);
+           }
+           else
+           {
+               //                  Usage	Total Paid  Remaining
+               //First Calculation   0MB   $50   $0    $50
+               //Payment Made		        $50   $50   $0
+               //Add 10GB more   10240MB   $60   $50   $10
+               //Issue encountered
+
+               existingBill.TotalPaid = CalculateTotal(usages.Where(u => u.IsPaid));
+               existingBill.RemainingPayment = Math.Max(0, CalculateTotal(usages) - existingBill.TotalPaid);
+               _access.AddOrUpdateBill(existingBill);
+           }
+
+           return "Bill Calculated";
+       }
 
             return "Bill Calculated";
         }
