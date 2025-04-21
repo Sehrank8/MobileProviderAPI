@@ -128,7 +128,7 @@ namespace MobileProviderAPI.Data.Svc
                 return "Bill not found.";
             }
 
-            bill.TotalPaid = bill.RemainingPayment;
+            bill.TotalPaid += bill.RemainingPayment;
             bill.RemainingPayment = 0;
 
             _access.AddOrUpdateBill(bill);
