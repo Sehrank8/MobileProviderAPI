@@ -59,7 +59,8 @@ namespace MobileProviderAPI.Data.Svc
                 //Payment Made		        $50   $50   $0
                 //Add 10GB more   10240MB   $60   $50   $10
                 //Issue encountered
-                existingBill.RemainingPayment = Math.Max(0, total - existingBill.TotalPaid);
+                existingBill.TotalPaid = _access.GetUsages(subscriberNo, month, year).Where(u => u.IsPaid);
+                existingBill.RemainingPayment = total;
                 _access.AddOrUpdateBill(existingBill);
             }
 
