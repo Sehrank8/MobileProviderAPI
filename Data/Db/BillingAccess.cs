@@ -47,7 +47,7 @@ namespace MobileProviderAPI.Data.Db
             var existing = GetBill(bill.SubscriberNo, bill.Month, bill.Year);
             if (existing != null)
             {
-                existing.TotalPaid = bill.TotalPaid;
+                existing.TotalPaid += bill.TotalPaid;
                 existing.RemainingPayment = bill.RemainingPayment;
             }
             else
