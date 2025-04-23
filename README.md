@@ -12,6 +12,19 @@ A RESTful Web API built with **ASP.NET Core 8.0**, **PostgreSQL**, and **Entity 
 -  Query Bill endpoint will only return the remaining amount that is not paid
 -  Query Bill Detailed endpoint will return the total bill, remaining bill, phone and internet breakdown with paging, and will also return subscriber no, month and year, because details.
 -  Pay Bill will pay the current amount of the bill, if a usage gets added after the bill was paid it will be marked as not payed for that month until another payment is made (this just pays the remaining value)  
+-  Months are represented as integer like 1 for january, 2 for february, 3 for march and so on.
+-  If a bill is fully paid (remainingPayment = 0) and new usage is added, that bill's remainingPayment and totalBill is updated according to the new usage.
+
+---
+
+
+##  Issues Encountered
+-  Paybill and CalculateBill were not generating and overwriting existing bills properly, for example if I had a bill of 50$ and a payment was made setting the totalPaid to 50$ then I added another usage and Calculated the bill, the totalPaid was set to 0$.
+-  After the previous issue was fix another problem arised, if I calculated the bill again it would always have the 50$ base internet fee as remaining, and after that was fixed the base 50$ fee would alway be marked as paid an would overwrite a bill if the bill was calculated two times.
+-  The dockerfile written for deployment was fixed a few times until it could be deployed.
+
+
+
 
 
 ---
