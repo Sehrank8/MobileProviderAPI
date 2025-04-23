@@ -150,6 +150,9 @@ Navigate to: `http://localhost:8080/swagger`
 ![My ER Diagram](ER_DIAGRAM.png)
 
 ---
+## 📁 LINK TO THE VIDEO
+  [https://drive.google.com/file/d/1Vu7Gh15nnTfD9RMXW8EK9RlUG-c0DUtt/view?usp=sharing](https://drive.google.com/file/d/1Vu7Gh15nnTfD9RMXW8EK9RlUG-c0DUtt/view?usp=sharing)
+---
 ## 📁 Project Structure
 
 ```
