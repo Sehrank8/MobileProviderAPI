@@ -22,9 +22,10 @@ A RESTful Web API built with **ASP.NET Core 8.0**, **PostgreSQL**, and **Entity 
 -  Paybill and CalculateBill were not generating and overwriting existing bills properly, for example if I had a bill of 50$ and a payment was made setting the totalPaid to 50$ then I added another usage and Calculated the bill, the totalPaid was set to 0$.
 -  After the previous issue was fix another problem arised, if I calculated the bill again it would always have the 50$ base internet fee as remaining, and after that was fixed the base 50$ fee would alway be marked as paid an would overwrite a bill if the bill was calculated two times.
 -  The dockerfile written for deployment was fixed a few times until it could be deployed.
+---
 
-
-
+##  My ER Diagram
+![My ER Diagram](ER_DIAGRAM.png)
 
 
 ---
